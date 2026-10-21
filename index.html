@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!-- Created by 青云 on 2026/10/21. -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <meta name="referrer" content="no-referrer">
+  <title>本周上新 · 电影 剧集 演唱会 发布会</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍿</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09070d;
+      --panel: rgba(26,20,34,0.78);
+      --panel-2: rgba(255,255,255,0.03);
+      --hover: rgba(255,255,255,0.045);
+      --line: rgba(255,255,255,0.07);
+      --line-2: rgba(255,255,255,0.14);
+      --text-1: #f3eff8;
+      --text-2: #b3a9c0;
+      --text-3: #776d85;
+      --accent: #f472b6;
+      --grad: linear-gradient(120deg, #f472b6 0%, #a78bfa 55%, #60a5fa 100%);
+      --grid-dot: rgba(255,255,255,0.045);
+      --glow-1: rgba(244,114,182,0.13);
+      --glow-2: rgba(96,165,250,0.09);
+      --movie: #f59e0b;
+      --tv: #a78bfa;
+      --show: #34d399;
+      --concert: #f472b6;
+      --launch: #60a5fa;
+      --star: #fbbf24;
+      --ok: #22c55e;
+      --err: #ef4444;
+      --kbd-bg: rgba(255,255,255,0.06);
+    }
+    :root[data-theme="light"] {
+      --bg: #faf8fc;
+      --panel: rgba(255,255,255,0.92);
+      --panel-2: rgba(30,10,50,0.025);
+      --hover: rgba(30,10,50,0.04);
+      --line: rgba(30,10,50,0.08);
+      --line-2: rgba(30,10,50,0.16);
+      --text-1: #1b1424;
+      --text-2: #5c5269;
+      --text-3: #958aa3;
+      --accent: #db2777;
+      --grid-dot: rgba(30,10,50,0.06);
+      --glow-1: rgba(244,114,182,0.09);
+      --glow-2: rgba(96,165,250,0.06);
+      --movie: #d97706;
+      --tv: #7c3aed;
+      --show: #059669;
+      --concert: #db2777;
+      --launch: #2563eb;
+      --star: #d97706;
+      --kbd-bg: rgba(30,10,50,0.05);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text-1);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(600px 400px at 15% -5%, var(--glow-1), transparent 70%),
+        radial-gradient(700px 500px at 95% 0%, var(--glow-2), transparent 70%),
+        radial-gradient(circle, var(--grid-dot) 1px, transparent 1px) 0 0 / 22px 22px;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, select { font: inherit; color: inherit; }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      background: color-mix(in srgb, var(--bg) 72%, transparent);
+      backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 20px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; white-space: nowrap; }
+    .logo-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--grad); display: grid; place-items: center; font-size: 15px; box-shadow: 0 0 20px var(--glow-1); }
+    .logo small { font-weight: 500; font-size: 12px; color: var(--text-3); letter-spacing: 0; }
+    .search {
+      flex: 1; max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 8px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 0 10px; height: 36px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow-1); }
+    .search svg { color: var(--text-3); flex: none; }
+    .search input { flex: 1; min-width: 0; background: none; border: none; outline: none; color: var(--text-1); font: inherit; font-size: 13.5px; }
+    .search input::placeholder { color: var(--text-3); }
+    kbd { font-family: inherit; font-size: 11px; color: var(--text-3); background: var(--kbd-bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+    .top-right { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .updated { font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(34,197,94,0.2); animation: pulse 2s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(34,197,94,0); } }
+    .icon-btn { width: 34px; height: 34px; border-radius: 9px; background: var(--panel); border: 1px solid var(--line); cursor: pointer; display: grid; place-items: center; color: var(--text-2); flex: none; }
+    .icon-btn:hover { color: var(--text-1); border-color: var(--line-2); }
+    .icon-btn.spin svg { animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Layout ── */
+    .layout { max-width: 1400px; margin: 0 auto; padding: 24px 24px 64px; display: grid; grid-template-columns: 190px minmax(0, 1fr) 290px; gap: 24px; align-items: start; }
+    .side { position: sticky; top: 84px; }
+    .side-title { font-size: 11.5px; color: var(--text-3); padding: 0 10px; margin: 4px 0 8px; letter-spacing: .04em; }
+    .nav-item { width: 100%; display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; border: none; background: none; cursor: pointer; text-align: left; color: var(--text-2); font-size: 13.5px; position: relative; }
+    .nav-item:hover { background: var(--hover); color: var(--text-1); }
+    .nav-item.active { background: var(--panel); color: var(--text-1); box-shadow: inset 0 0 0 1px var(--line); }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: var(--grad); }
+    .nav-item .count { margin-left: auto; font-size: 11.5px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+    .main-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+    .main-head h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+    .main-head h1 span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .main-head p { font-size: 12.5px; color: var(--text-3); margin-top: 4px; }
+    .tabs { display: flex; gap: 2px; padding: 3px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; flex-wrap: wrap; }
+    .tab { padding: 6px 12px; border-radius: 7px; border: none; background: none; cursor: pointer; font-size: 13px; color: var(--text-3); white-space: nowrap; }
+    .tab:hover { color: var(--text-1); }
+    .tab.active { background: var(--hover); color: var(--text-1); box-shadow: inset 0 0 0 1px var(--line-2); }
+    .ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    select.sel { background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 6px 10px; font-size: 13px; color: var(--text-2); cursor: pointer; }
+
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+    .muted { color: var(--text-3); }
+    .empty { text-align: center; padding: 48px 0; color: var(--text-3); }
+    .loading { padding: 80px 0; text-align: center; color: var(--text-3); }
+    .section-title { font-size: 13px; color: var(--text-3); margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .section-title:first-child { margin-top: 0; }
+    .section-title b { color: var(--text-1); font-size: 14.5px; }
+    .note { font-size: 12px; color: var(--text-3); margin-top: 10px; }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* ── KPI ── */
+    .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 8px; }
+    .kpi { padding: 14px 16px; position: relative; overflow: hidden; cursor: pointer; }
+    .kpi:hover { border-color: var(--line-2); }
+    .kpi::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--c, var(--accent)); }
+    .kpi .k { font-size: 12px; color: var(--text-3); }
+    .kpi .v { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 2px 0; }
+    .kpi .s { font-size: 12.5px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── Week calendar ── */
+    .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+    .day { padding: 10px; min-height: 150px; }
+    .day.today { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: 0 0 0 3px var(--glow-1); }
+    .day-h { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+    .day-h b { font-size: 15px; }
+    .day-h span { font-size: 11.5px; color: var(--text-3); }
+    .ev { display: block; font-size: 12px; line-height: 1.4; padding: 4px 6px 4px 8px; margin-bottom: 4px; border-radius: 6px; background: var(--panel-2); border-left: 2px solid var(--c); color: var(--text-2); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .ev:hover { color: var(--text-1); background: var(--hover); }
+    .ev.more { border-left-color: transparent; color: var(--text-3); cursor: default; }
+    .legend { display: flex; gap: 14px; font-size: 12px; color: var(--text-3); flex-wrap: wrap; }
+    .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; background: var(--c); }
+
+    /* ── Posters ── */
+    .posters { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .poster { display: flex; flex-direction: column; overflow: hidden; transition: transform .15s, border-color .15s; }
+    .poster:hover { transform: translateY(-2px); border-color: var(--line-2); }
+    .poster .img { aspect-ratio: 2 / 3; background: var(--panel-2); position: relative; overflow: hidden; }
+    .poster .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster .img .ph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 30px; opacity: .35; }
+    .poster .tag { position: absolute; top: 8px; left: 8px; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; background: var(--accent); color: #fff; }
+    .poster .rt { position: absolute; right: 8px; bottom: 8px; font-size: 12.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(0,0,0,.66); color: var(--star); }
+    .poster .rt.none { color: #cfc8d8; font-weight: 500; font-size: 11px; }
+    .poster .body { padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 3px; }
+    .poster .t { font-weight: 600; font-size: 13.5px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .poster .m { font-size: 12px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+    .chip { font-size: 11px; padding: 1px 6px; border-radius: 5px; background: var(--hover); color: var(--text-2); border: 1px solid var(--line); white-space: nowrap; }
+    .chip.c { color: var(--c); border-color: color-mix(in srgb, var(--c) 35%, transparent); background: color-mix(in srgb, var(--c) 10%, transparent); }
+
+    /* ── Lists ── */
+    .list { display: flex; flex-direction: column; }
+    .item { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+    .item:last-child { border-bottom: none; }
+    .item:hover { background: var(--hover); }
+    .date-box { text-align: center; padding: 6px 0; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); }
+    .date-box b { display: block; font-size: 18px; font-weight: 800; line-height: 1.15; }
+    .date-box span { font-size: 11px; color: var(--text-3); }
+    .date-box.past { opacity: .5; }
+    .item .t { font-weight: 600; font-size: 14px; line-height: 1.45; }
+    .item .t a:hover { color: var(--accent); }
+    .item .m { font-size: 12px; color: var(--text-3); margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .item .r { text-align: right; font-size: 12.5px; white-space: nowrap; }
+    .item .r b { display: block; font-size: 15px; color: var(--c, var(--text-1)); }
+    .arts { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+    .arts a { font-size: 12px; color: var(--text-3); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .arts a:hover { color: var(--text-1); }
+    .news-row { display: flex; gap: 12px; align-items: baseline; padding: 9px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .news-row:last-child { border-bottom: none; }
+    .news-row:hover { background: var(--hover); }
+    .news-row .l { flex: 1; min-width: 0; color: var(--text-2); }
+    .news-row:hover .l { color: var(--text-1); }
+    .news-row .r { color: var(--text-3); font-size: 12px; white-space: nowrap; }
+
+    /* ── Aside ── */
+    .aside { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
+    .widget { padding: 14px 16px; }
+    .widget h3 { font-size: 13px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .w-row { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; padding: 5px 0; border-bottom: 1px dashed var(--line); }
+    .w-row:last-child { border-bottom: none; }
+    .w-row .l { color: var(--text-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .w-row .r { color: var(--text-3); white-space: nowrap; }
+    .st-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--ok); }
+    .st-dot.bad { background: var(--err); }
+    .st-dot.stale { background: #f59e0b; }
+    .w-note { font-size: 12px; color: var(--text-3); line-height: 1.65; }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 170px minmax(0, 1fr); }
+      .aside { display: none; }
+    }
+    @media (max-width: 860px) {
+      .topbar-inner { padding: 0 16px; gap: 10px; }
+      .logo small, .updated, kbd, .top-right a.icon-btn { display: none; }
+      .logo { font-size: 15px; }
+      .search { min-width: 0; flex: 1 1 0; }
+      .layout { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 16px; }
+      .side { position: static; }
+      .side-title { display: none; }
+      .side nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+      .nav-item { width: auto; white-space: nowrap; }
+      .nav-item .count { margin-left: 4px; }
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .week { grid-template-columns: minmax(0, 1fr); }
+      .day { min-height: 0; }
+      .posters { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+      .item { grid-template-columns: 58px minmax(0, 1fr); padding: 12px; }
+      .item .r { grid-column: 2; text-align: left; }
+      .item .r b { display: inline; margin-right: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo"><div class="logo-mark">🍿</div>本周上新 <small>电影 · 剧集 · 演唱会 · 发布会</small></div>
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜索片名、歌手、城市、品牌…" autocomplete="off">
+        <kbd>⌘K</kbd>
+      </label>
+      <div class="top-right">
+        <div class="updated"><i class="live-dot"></i><span id="updated">读取中…</span></div>
+        <button class="icon-btn" id="reload" title="重新读取数据"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>
+        <a class="icon-btn" href="https://github.com/climb0516/weekly-new/actions/workflows/scrape.yml" target="_blank" rel="noopener" title="到 GitHub Actions 手动触发抓取">⚡</a>
+        <button class="icon-btn" id="theme" title="切换深浅色">☾</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <div class="side-title">分类</div>
+      <nav id="nav"></nav>
+    </aside>
+    <main id="main"><div class="loading">加载中…</div></main>
+    <aside class="aside" id="aside"></aside>
+  </div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('wn:' + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('wn:' + k, JSON.stringify(v)); } catch {} },
+};
+const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+const COLOR = { movie: 'var(--movie)', tv: 'var(--tv)', show: 'var(--show)', concert: 'var(--concert)', launch: 'var(--launch)' };
+const SRC_NAME = { showing: '豆瓣 · 正在热映', soon: '豆瓣 · 即将上映', tv: '豆瓣 · 剧集综艺', schedule: '新闻 · 定档', concert: '新闻 · 演唱会', launch: '新闻 · 发布会' };
+
+let D = null;
+const state = { view: store.get('view', 'home'), q: '', movieTab: store.get('movieTab', 'showing'), movieSort: store.get('movieSort', 'hot'),
+                tvKind: store.get('tvKind', 'all'), tvRange: store.get('tvRange', 'new'), city: store.get('city', '') };
+
+// ── 日期工具（一律按北京时间） ──
+const cstToday = () => new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
+const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const diffDays = (a, b) => Math.round((new Date(a + 'T00:00:00Z') - new Date(b + 'T00:00:00Z')) / 86400e3);
+const wd = iso => WEEK[new Date(iso + 'T00:00:00Z').getUTCDay()];
+const md = iso => `${+iso.slice(5, 7)}/${+iso.slice(8, 10)}`;
+function rel(iso) {
+  const n = diffDays(iso, cstToday());
+  return n === 0 ? '今天' : n === 1 ? '明天' : n === 2 ? '后天' : n === -1 ? '昨天' : n > 0 ? `${n} 天后` : `${-n} 天前`;
+}
+function countdown(iso, hm) {
+  const t = new Date(`${iso}T${hm || '00:00'}:00+08:00`) - Date.now();
+  if (!hm) { const n = diffDays(iso, cstToday()); return n > 0 ? `${n} 天` : n === 0 ? '今天' : '已结束'; }
+  if (t <= 0) return t > -3 * 3600e3 ? '进行中' : '已结束';
+  const s = t / 1000, d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+  return d ? `${d} 天 ${h} 小时` : h ? `${h} 小时 ${m} 分` : `${m} 分钟`;
+}
+function ago(t) {
+  const s = (Date.now() - new Date(t)) / 1000;
+  if (s < 3600) return Math.max(1, Math.round(s / 60)) + ' 分钟前';
+  if (s < 86400) return Math.round(s / 3600) + ' 小时前';
+  return Math.round(s / 86400) + ' 天前';
+}
+const match = (...fields) => !state.q || fields.join(' ').toLowerCase().includes(state.q);
+
+// ── 数据整理 ──
+function prep(d) {
+  const today = cstToday();
+  d.allMovies = [...d.movies.showing.map(m => ({ ...m, status: 'showing' })), ...d.movies.soon.map(m => ({ ...m, status: 'soon' }))];
+  d.newMovies = d.movies.showing.filter(m => m.release && diffDays(today, m.release) >= 0 && diffDays(today, m.release) < 7);
+  d.tvNew = d.tv.filter(t => t.pubdate && t.pub_precise && diffDays(today, t.pubdate) >= 0 && diffDays(today, t.pubdate) < 14);
+  // 人工补充的发布会与新闻提取的合并：同品牌同日以人工为准
+  const manual = (d.manual || []).map(e => ({ ...e, manual: true, articles: e.url ? [{ title: e.title, url: e.url, source: '人工确认', published: '' }] : [] }));
+  const mkeys = new Set(manual.map(e => e.brand + '|' + e.date));
+  d.launches = [...manual, ...d.news.launch.filter(e => !mkeys.has(e.brand + '|' + e.date))];
+  d.cities = [...new Set(d.news.concert.map(c => c.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'zh'));
+  return d;
+}
+
+// ── 通用片段 ──
+const stars = r => r ? `★ ${r.toFixed(1)}` : '';
+function poster(x, kind, tag) {
+  const meta = kind === 'movie'
+    ? [x.release ? `${md(x.release)} 上映` : x.year, x.genres].filter(Boolean).join(' · ')
+    : [x.pubdate ? `${md(x.pubdate)} 开播` : x.year, x.genres].filter(Boolean).join(' · ');
+  const chips = kind === 'movie'
+    ? (x.wish ? `<span class="chip">${(x.wish / 1e4 >= 1 ? (x.wish / 1e4).toFixed(1) + ' 万' : x.wish)} 人想看</span>` : '') + (x.region ? `<span class="chip">${esc(x.region.split(' ')[0])}</span>` : '')
+    : (x.platforms || []).slice(0, 2).map(p => `<span class="chip c" style="--c:${COLOR[x.kind]}">${esc(p)}</span>`).join('') + (x.progress ? `<span class="chip">${esc(x.progress)}</span>` : '');
+  return `<a class="card poster" href="${esc(x.url)}" target="_blank" rel="noopener">
+    <div class="img"><div class="ph">${kind === 'movie' ? '🎬' : x.kind === 'show' ? '🎤' : '📺'}</div>${x.cover_local ? `<img src="${esc(x.cover_local)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
+      ${tag ? `<span class="tag">${tag}</span>` : ''}
+      <span class="rt ${x.rating ? '' : 'none'}">${x.rating ? stars(x.rating) : '暂无评分'}</span></div>
+    <div class="body"><div class="t">${esc(x.title)}</div><div class="m">${esc(meta)}</div><div class="chips">${chips}</div></div></a>`;
+}
+function dateBox(iso, hm) {
+  if (!iso) return `<div class="date-box"><b>?</b><span>日期待定</span></div>`;
+  const past = diffDays(iso, cstToday()) < 0;
+  return `<div class="date-box ${past ? 'past' : ''}"><b class="num">${md(iso)}</b><span>周${wd(iso)}${hm ? ' ' + hm : ''}</span></div>`;
+}
+function articles(list, n = 3) {
+  return `<div class="arts">${list.slice(0, n).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">↗ ${esc(a.source || '来源')}${a.published ? ' · ' + ago(a.published) : ''} — ${esc(a.title)}</a>`).join('')}</div>`;
+}
+
+// ── 视图：概览 ──
+function viewHome() {
+  const today = cstToday();
+  const best = [...D.newMovies].filter(m => m.rating).sort((a, b) => b.rating - a.rating)[0]
+            || [...D.movies.showing].filter(m => m.rating && m.rating_count > 1000).sort((a, b) => b.rating - a.rating)[0];
+  const nextLaunch = D.launches.filter(e => e.date && diffDays(e.date, today) >= 0).sort((a, b) => a.date.localeCompare(b.date))[0];
+  const nextSale = D.news.concert.filter(c => c.sale && c.date && diffDays(c.date, today) >= 0).sort((a, b) => a.date.localeCompare(b.date))[0];
+  const kpi = (c, k, v, s, go) => `<div class="card kpi" style="--c:${c}" data-go="${go}"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+
+  // 7 天日历：电影上映、剧集开播、定档、发布会、开票
+  const days = Array.from({ length: 7 }, (_, i) => addDays(today, i - 1));
+  const evs = {};
+  const push = (iso, html) => { if (iso && days.includes(iso)) (evs[iso] = evs[iso] || []).push(html); };
+  const ev = (c, title, url, pre = '') => `<a class="ev" style="--c:${c}" ${url ? `href="${esc(url)}" target="_blank" rel="noopener"` : ''} title="${esc(title)}">${pre}${esc(title)}</a>`;
+  D.allMovies.forEach(m => match(m.title) && push(m.release, ev(COLOR.movie, m.title, m.url, m.rating ? `<b>${m.rating}</b> ` : '')));
+  D.tv.forEach(t => t.pub_precise && match(t.title) && push(t.pubdate, ev(COLOR[t.kind], t.title, t.url, '开播 ')));
+  const tvTitles = new Set(D.tv.map(t => t.title)), movieTitles = new Set(D.allMovies.map(m => m.title));
+  D.news.schedule.forEach(s => !tvTitles.has(s.name) && !movieTitles.has(s.name) && match(s.name) && push(s.date, ev(COLOR[s.cat], `《${s.name}》`, s.articles[0]?.url, '定档 ')));
+  D.launches.forEach(e => match(e.brand, e.title) && push(e.date, ev(COLOR.launch, `${e.brand} 发布会`, e.articles[0]?.url, e.time ? e.time + ' ' : '')));
+  D.news.concert.forEach(c => c.sale && match(c.title, c.city) && push(c.date, ev(COLOR.concert, c.title, c.articles[0]?.url, '开票 ')));
+
+  return `<div class="main-head"><div><h1>这周有什么<span>新东西</span></h1><p>新上映电影、新开播剧集综艺、演唱会开票、数码发布会，一页看完</p></div></div>
+    <div class="kpis">
+      ${kpi(COLOR.movie, '本周新上映', `${D.newMovies.length} 部`, D.newMovies.slice(0, 3).map(m => esc(m.title)).join(' · ') || '本周没有新片', 'movie')}
+      ${kpi('var(--star)', best ? '新片最高分' : '热映最高分', best ? stars(best.rating) : '—', best ? esc(best.title) : '', 'movie')}
+      ${kpi(COLOR.launch, '下一场发布会', nextLaunch ? countdown(nextLaunch.date, nextLaunch.time) : '—', nextLaunch ? `${esc(nextLaunch.brand)} · ${md(nextLaunch.date)} 周${wd(nextLaunch.date)}` : '近期没有', 'launch')}
+      ${kpi(COLOR.concert, '最近开票', nextSale ? rel(nextSale.date) : '—', nextSale ? esc(nextSale.title) : '近期没有提取到开票日期', 'concert')}
+    </div>
+    <div class="section-title"><b>本周日历</b><span>昨天到未来 5 天</span>
+      <span class="legend" style="margin-left:auto"><span><i style="--c:var(--movie)"></i>电影</span><span><i style="--c:var(--tv)"></i>剧集</span><span><i style="--c:var(--show)"></i>综艺</span><span><i style="--c:var(--launch)"></i>发布会</span><span><i style="--c:var(--concert)"></i>开票</span></span></div>
+    <div class="week">${days.map(iso => {
+      const list = evs[iso] || [];
+      return `<div class="card day ${iso === today ? 'today' : ''}"><div class="day-h"><b>${md(iso)}</b><span>${iso === today ? '今天' : '周' + wd(iso)}</span></div>
+        ${list.slice(0, 8).join('')}${list.length > 8 ? `<span class="ev more">还有 ${list.length - 8} 项</span>` : ''}${list.length ? '' : '<span class="muted" style="font-size:12px">—</span>'}</div>`;
+    }).join('')}</div>
+    <div class="section-title"><b>本周新上映</b><span>上映 7 天内 · 豆瓣评分</span></div>
+    ${D.newMovies.filter(m => match(m.title, m.genres)).length ? `<div class="posters">${D.newMovies.filter(m => match(m.title, m.genres)).map(m => poster(m, 'movie', '新片')).join('')}</div>` : '<div class="card empty">这周没有新上映的电影</div>'}
+    <div class="section-title"><b>新开播剧集 · 综艺</b><span>近 14 天开播</span></div>
+    ${D.tvNew.filter(t => match(t.title, t.genres)).length ? `<div class="posters">${D.tvNew.filter(t => match(t.title, t.genres)).sort((a, b) => b.pubdate.localeCompare(a.pubdate)).slice(0, 12).map(t => poster(t, 'tv', t.kind === 'show' ? '新综艺' : '新剧')).join('')}</div>` : '<div class="card empty">近 14 天没有新开播</div>'}`;
+}
+
+// ── 视图：电影 ──
+function viewMovie() {
+  const list = (state.movieTab === 'showing' ? D.movies.showing : D.movies.soon).filter(m => match(m.title, m.original_title, m.genres, m.directors, m.actors, m.region));
+  const sorted = [...list];
+  if (state.movieSort === 'rating') sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  else if (state.movieSort === 'date') sorted.sort((a, b) => (state.movieTab === 'soon' ? 1 : -1) * (a.release || '').localeCompare(b.release || ''));
+  else if (state.movieTab === 'soon') sorted.sort((a, b) => (b.wish || 0) - (a.wish || 0));
+  const today = cstToday();
+  const tag = m => state.movieTab === 'soon' ? (m.release ? rel(m.release) : '') : (m.release && diffDays(today, m.release) < 7 && diffDays(today, m.release) >= 0 ? '新片' : '');
+  const sched = D.news.schedule.filter(s => s.cat === 'movie' && s.date && diffDays(s.date, today) >= 0 && !D.allMovies.some(m => m.title === s.name) && match(s.name, s.title));
+  return `<div class="main-head"><div><h1>🎬 电影</h1><p>豆瓣「正在热映」与「即将上映」，评分每天更新</p></div>
+      <div class="ctrl">
+        <div class="tabs">${[['showing', `正在热映 ${D.movies.showing.length}`], ['soon', `即将上映 ${D.movies.soon.length}`]].map(([k, t]) => `<button class="tab ${state.movieTab === k ? 'active' : ''}" data-mtab="${k}">${t}</button>`).join('')}</div>
+        <select class="sel" id="msort">${[['hot', state.movieTab === 'soon' ? '按想看人数' : '按热度'], ['rating', '按评分'], ['date', '按上映日期']].map(([k, t]) => `<option value="${k}" ${state.movieSort === k ? 'selected' : ''}>${t}</option>`).join('')}</select>
+      </div></div>
+    ${sorted.length ? `<div class="posters">${sorted.map(m => poster(m, 'movie', tag(m))).join('')}</div>` : '<div class="card empty">没有匹配的电影</div>'}
+    ${sched.length ? `<div class="section-title"><b>新闻里的定档</b><span>豆瓣还没收录到「即将上映」的</span></div>
+      <div class="card list">${sched.map(s => `<div class="item">${dateBox(s.date, s.time)}<div><div class="t">《${esc(s.name)}》</div>${articles(s.articles, 2)}</div><div class="r" style="--c:var(--movie)"><b>${rel(s.date)}</b></div></div>`).join('')}</div>` : ''}`;
+}
+
+// ── 视图：剧集综艺 ──
+function viewTV() {
+  const today = cstToday();
+  let list = state.tvRange === 'new' ? D.tvNew : D.tv;
+  list = list.filter(t => (state.tvKind === 'all' || t.kind === state.tvKind) && match(t.title, t.genres, t.actors, t.region, (t.platforms || []).join(' ')));
+  if (state.tvRange === 'new') list = [...list].sort((a, b) => b.pubdate.localeCompare(a.pubdate));
+  const sched = D.news.schedule.filter(s => s.cat !== 'movie' && (!s.date || diffDays(s.date, today) >= -1) && (state.tvKind === 'all' || s.cat === state.tvKind)
+    && !D.tv.some(t => t.title === s.name && t.pub_precise && diffDays(today, t.pubdate) >= 0) && match(s.name, s.title));
+  return `<div class="main-head"><div><h1>📺 剧集 · 综艺</h1><p>豆瓣热门剧集与综艺，开播日期、播出平台来自豆瓣条目</p></div>
+      <div class="ctrl">
+        <div class="tabs">${[['all', '全部'], ['tv', '剧集'], ['show', '综艺']].map(([k, t]) => `<button class="tab ${state.tvKind === k ? 'active' : ''}" data-tvkind="${k}">${t}</button>`).join('')}</div>
+        <div class="tabs">${[['new', `近 14 天开播 ${D.tvNew.length}`], ['hot', `热门 ${D.tv.length}`]].map(([k, t]) => `<button class="tab ${state.tvRange === k ? 'active' : ''}" data-tvrange="${k}">${t}</button>`).join('')}</div>
+      </div></div>
+    ${list.length ? `<div class="posters">${list.map(t => poster(t, 'tv', t.pub_precise && diffDays(today, t.pubdate) < 14 && diffDays(today, t.pubdate) >= 0 ? (t.kind === 'show' ? '新综艺' : '新剧') : '')).join('')}</div>` : '<div class="card empty">没有匹配的剧集</div>'}
+    <div class="section-title"><b>即将定档</b><span>从新闻标题提取，日期以官方为准</span></div>
+    ${sched.length ? `<div class="card list">${sched.map(s => `<div class="item">${dateBox(s.date, s.time)}<div><div class="t">《${esc(s.name)}》</div>
+        <div class="m"><span class="chip c" style="--c:${COLOR[s.cat]}">${s.cat === 'show' ? '综艺' : '剧集'}</span>${s.platform ? `<span class="chip">${esc(s.platform)}</span>` : ''}</div>${articles(s.articles, 2)}</div>
+        <div class="r" style="--c:${COLOR[s.cat]}">${s.date ? `<b>${rel(s.date)}</b>` : '<span class="muted">日期未公布</span>'}</div></div>`).join('')}</div>` : '<div class="card empty">近期没有定档新闻</div>'}`;
+}
+
+// ── 视图：演唱会 ──
+function viewConcert() {
+  const today = cstToday();
+  const all = D.news.concert.filter(c => (!state.city || c.city === state.city) && match(c.title, c.city));
+  const dated = all.filter(c => c.date && diffDays(c.date, today) >= -1).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
+  const undated = all.filter(c => !c.date && c.announce).sort((a, b) => b.articles[0].published.localeCompare(a.articles[0].published)).slice(0, 40);
+  return `<div class="main-head"><div><h1>🎤 演唱会</h1><p>全国演唱会开票、官宣动态。大麦有验证无法直接抓取，信息来自新闻标题</p></div>
+      <div class="ctrl"><select class="sel" id="city"><option value="">全部城市</option>${D.cities.map(c => `<option ${state.city === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div></div>
+    <div class="section-title"><b>开票 / 演出日历</b><span>标题里带明确日期的</span></div>
+    ${dated.length ? `<div class="card list">${dated.map(c => `<div class="item">${dateBox(c.date, c.time)}<div><div class="t">${esc(c.title)}</div>
+        <div class="m"><span class="chip c" style="--c:${c.sale ? 'var(--concert)' : 'var(--tv)'}">${c.sale ? '开票' : '演出 / 官宣'}</span>${c.city ? `<span class="chip">${esc(c.city)}</span>` : ''}${c.articles.length > 1 ? `<span>${c.articles.length} 篇报道</span>` : ''}</div>${articles(c.articles, 2)}</div>
+        <div class="r" style="--c:var(--concert)"><b>${c.time ? countdown(c.date, c.time) : rel(c.date)}</b></div></div>`).join('')}</div>` : '<div class="card empty">没有提取到带日期的开票信息</div>'}
+    <div class="section-title"><b>近期开票动态</b><span>最近 10 天的开票、官宣新闻（标题里没有具体日期）</span></div>
+    ${undated.length ? `<div class="card list">${undated.map(c => `<a class="news-row" href="${esc(c.articles[0].url)}" target="_blank" rel="noopener"><span class="l">${c.city ? `<span class="chip">${esc(c.city)}</span> ` : ''}${esc(c.title)}</span><span class="r">${esc(c.articles[0].source)} · ${ago(c.articles[0].published)}</span></a>`).join('')}</div>` : '<div class="card empty">没有相关新闻</div>'}`;
+}
+
+// ── 视图：发布会 ──
+function viewLaunch() {
+  const today = cstToday();
+  const all = D.launches.filter(e => match(e.brand, e.title));
+  const dated = all.filter(e => e.date).sort((a, b) => a.date.localeCompare(b.date));
+  const undated = all.filter(e => !e.date);
+  return `<div class="main-head"><div><h1>📱 数码发布会</h1><p>手机、电脑、汽车等品牌发布会日程，带倒计时</p></div></div>
+    ${dated.length ? `<div class="card list">${dated.map(e => `<div class="item">${dateBox(e.date, e.time)}<div><div class="t">${esc(e.brand)} · ${esc(e.title)}</div>
+        <div class="m"><span class="chip c" style="--c:var(--launch)">${esc(e.brand)}</span>${e.manual ? '<span class="chip c" style="--c:var(--ok)">人工确认</span>' : `<span>${e.articles.length} 篇报道</span>`}
+        ${e.alt_dates ? `<span>· 另有报道称 ${e.alt_dates.map(md).join('、')}（时差或口径不同）</span>` : ''}</div>${articles(e.articles, 3)}</div>
+        <div class="r" style="--c:var(--launch)"><b>${diffDays(e.date, today) < 0 ? '已结束' : countdown(e.date, e.time)}</b>${diffDays(e.date, today) >= 0 && !e.time ? '<span class="muted">北京时间</span>' : ''}</div></div>`).join('')}</div>` : '<div class="card empty">近期没有提取到发布会日期</div>'}
+    ${undated.length ? `<div class="section-title"><b>近期消息</b><span>已官宣但标题里没有具体日期</span></div>
+      <div class="card list">${undated.map(e => `<a class="news-row" href="${esc(e.articles[0].url)}" target="_blank" rel="noopener"><span class="l"><span class="chip c" style="--c:var(--launch)">${esc(e.brand)}</span> ${esc(e.title)}</span><span class="r">${esc(e.articles[0].source)} · ${ago(e.articles[0].published)}</span></a>`).join('')}</div>` : ''}
+    <p class="note">日期从新闻标题提取，可能有误差；重要发布会可以在仓库的 events.json 里人工补充，页面会标「人工确认」。</p>`;
+}
+
+// ── 侧栏、右栏 ──
+const VIEWS = {
+  home:    { name: '🏠 概览', render: viewHome, count: () => '' },
+  movie:   { name: '🎬 电影', render: viewMovie, count: () => D.movies.showing.length + D.movies.soon.length },
+  tv:      { name: '📺 剧集综艺', render: viewTV, count: () => D.tvNew.length + ' 新' },
+  concert: { name: '🎤 演唱会', render: viewConcert, count: () => D.news.concert.filter(c => c.date && diffDays(c.date, cstToday()) >= 0).length || '' },
+  launch:  { name: '📱 发布会', render: viewLaunch, count: () => D.launches.filter(e => e.date && diffDays(e.date, cstToday()) >= 0).length || '' },
+};
+function renderNav() {
+  $('#nav').innerHTML = Object.entries(VIEWS).map(([k, v]) => `<button class="nav-item ${state.view === k ? 'active' : ''}" data-go="${k}">${v.name}<span class="count">${v.count()}</span></button>`).join('');
+}
+function renderAside() {
+  const today = cstToday();
+  const soon = D.launches.filter(e => e.date && diffDays(e.date, today) >= 0).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 4);
+  const top = [...D.movies.showing].filter(m => m.rating && m.rating_count >= 1000).sort((a, b) => b.rating - a.rating).slice(0, 5);
+  $('#aside').innerHTML = `
+    <div class="card widget"><h3>⭐ 热映高分</h3>${top.map(m => `<a class="w-row" href="${esc(m.url)}" target="_blank" rel="noopener"><span class="l">${esc(m.title)}</span><span class="r" style="color:var(--star)">${m.rating.toFixed(1)}</span></a>`).join('') || '<div class="w-note">暂无</div>'}</div>
+    <div class="card widget"><h3>📱 发布会倒计时</h3>${soon.map(e => `<div class="w-row"><span class="l">${esc(e.brand)} · ${md(e.date)}</span><span class="r">${countdown(e.date, e.time)}</span></div>`).join('') || '<div class="w-note">近期没有</div>'}</div>
+    <div class="card widget"><h3>🛰 来源状态</h3>${Object.entries(D.sources).map(([k, s]) => `<div class="w-row"><span class="l"><i class="st-dot ${s.ok ? '' : s.stale ? 'stale' : 'bad'}"></i>${SRC_NAME[k] || k}</span><span class="r">${s.ok ? s.count + ' 条' : s.stale ? '旧数据' : '失败'}</span></div>`).join('')}</div>
+    <div class="card widget"><h3>ℹ️ 说明</h3><p class="w-note">电影、剧集来自豆瓣；演唱会、发布会、定档来自 Google / Bing 新闻标题，日期为自动提取，请以官方公告为准。每天北京时间 08:00 更新。</p></div>`;
+}
+function render() {
+  if (!D) return;
+  if (!VIEWS[state.view]) state.view = 'home';
+  renderNav();
+  $('#main').innerHTML = VIEWS[state.view].render();
+  renderAside();
+}
+
+// ── 交互 ──
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go) { state.view = go.dataset.go; store.set('view', state.view); render(); window.scrollTo({ top: 0 }); return; }
+  const mt = e.target.closest('[data-mtab]');
+  if (mt) { state.movieTab = mt.dataset.mtab; store.set('movieTab', state.movieTab); render(); return; }
+  const tk = e.target.closest('[data-tvkind]');
+  if (tk) { state.tvKind = tk.dataset.tvkind; store.set('tvKind', state.tvKind); render(); return; }
+  const tr = e.target.closest('[data-tvrange]');
+  if (tr) { state.tvRange = tr.dataset.tvrange; store.set('tvRange', state.tvRange); render(); }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'msort') { state.movieSort = e.target.value; store.set('movieSort', state.movieSort); render(); }
+  if (e.target.id === 'city') { state.city = e.target.value; store.set('city', state.city); render(); }
+});
+$('#q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('#q').focus(); }
+  if (e.key === 'Escape' && document.activeElement === $('#q')) { $('#q').value = ''; state.q = ''; render(); $('#q').blur(); }
+});
+
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  $('#theme').textContent = t === 'light' ? '☀' : '☾';
+}
+applyTheme(store.get('theme', 'dark'));
+$('#theme').onclick = () => { const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'; store.set('theme', t); applyTheme(t); };
+
+async function load() {
+  const btn = $('#reload');
+  btn.classList.add('spin');
+  try {
+    const r = await fetch('data.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(r.status);
+    D = prep(await r.json());
+    $('#updated').textContent = '更新于 ' + ago(D.updated);
+    render();
+  } catch (err) {
+    console.warn('[WeeklyNew]', err);
+    if (!D) $('#main').innerHTML = `<div class="card empty">数据读取失败（${esc(err.message)}），稍后点右上角 ↻ 重试</div>`;
+  } finally {
+    btn.classList.remove('spin');
+  }
+}
+$('#reload').onclick = load;
+load();
+setInterval(() => { if (D) { $('#updated').textContent = '更新于 ' + ago(D.updated); render(); } }, 60 * 1000);   // 倒计时每分钟刷新
+</script>
+</body>
+</html>
