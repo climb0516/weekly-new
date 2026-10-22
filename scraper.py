@@ -122,6 +122,36 @@ def movies(name):
         raise ValueError("empty")
     return out
 
+def movie_detail(sid):
+    """电影详情：简介、片长、各地上映日期、语言、又名。"""
+    d = json.loads(fetch(f"{DOUBAN}/movie/{sid}", UA_MOBILE))
+    return {"intro": (d.get("intro") or "")[:300], "durations": d.get("durations") or [],
+            "pubdates": d.get("pubdate") or [], "languages": d.get("languages") or [],
+            "aka": (d.get("aka") or [])[:3], "fetched": TODAY.isoformat()}
+
+def movie_details(items, prev_cache):
+    """给电影补详情。已抓过的不重复抓（简介为空的过几天再试一次），缓存只保留还在榜上的。"""
+    ids = {it["id"] for it in items}
+    cache = {k: v for k, v in prev_cache.items() if k in ids}
+    stale = [sid for sid in ids if sid not in cache
+             or (not cache[sid].get("intro") and (TODAY - date.fromisoformat(cache[sid]["fetched"])).days >= DETAIL_TTL)]
+
+    def one(sid):
+        _time.sleep(0.3)
+        try:
+            return sid, movie_detail(sid)
+        except Exception:
+            return sid, None
+    with ThreadPoolExecutor(4) as ex:
+        for sid, det in ex.map(one, stale):
+            if det:
+                cache[sid] = det
+    print(f"    电影详情：新拉 {len(stale)} 条，成功 {sum(1 for s in stale if cache.get(s, {}).get('fetched') == TODAY.isoformat())} 条")
+    for it in items:
+        det = cache.get(it["id"]) or {}
+        it.update({k: det[k] for k in ("intro", "durations", "pubdates", "languages", "aka") if det.get(k)})
+    return cache
+
 # ── 剧集 / 综艺（豆瓣） ───────────────────────────────────────────────────────
 
 def tv_detail(sid):
@@ -215,8 +245,11 @@ def bing_news(q):
         real = urllib.parse.parse_qs(urllib.parse.urlparse(link).query).get("url")
         pub = re.search(r"<pubDate>(.*?)</pubDate>", it, re.S)
         src = re.search(r"<News:Source>(.*?)</News:Source>", it, re.S)
+        desc = re.search(r"<description>(.*?)</description>", it, re.S)
+        img = re.search(r"<News:Image>(.*?)</News:Image>", it, re.S)
         out.append({"title": t, "url": real[0] if real else link, "source": clean(src[1]) if src else "",
-                    "published": pub and pub[1]})
+                    "published": pub and pub[1], "desc": clean(desc[1])[:200] if desc else "",
+                    "img": html.unescape(img[1].strip()).replace("http://", "https://", 1) if img else ""})
     return out
 
 def parse_pub(s):
@@ -339,6 +372,7 @@ def news(kind, prev):
         if info["date"]:
             info["date"] = info["date"].isoformat()
         art = {"title": it["title"], "url": it["url"], "source": it["source"], "published": pub.isoformat(timespec="minutes")}
+        art.update({k: it[k] for k in ("desc", "img") if it.get(k)})     # Bing 带摘要和配图
         g = groups.get(info["key"])
         if g is None:
             g = groups[info["key"]] = {**info, "articles": [], "_urls": set()}
@@ -462,6 +496,7 @@ def main():
         sources[k] = {"ok": not stale, "stale": stale and bool(old[k]), "error": err, "count": len(val[k])}
 
     save_covers(val["showing"] + val["soon"] + val["tv"])
+    movie_cache = movie_details(val["showing"] + val["soon"], prev.get("movie_cache") or {})
 
     data = {
         "updated": datetime.now(CST).isoformat(timespec="seconds"),
@@ -472,6 +507,7 @@ def main():
         "news": {"concert": val["concert"], "launch": val["launch"], "schedule": val["schedule"]},
         "manual": manual_events(),
         "tv_cache": tv.cache or prev.get("tv_cache") or {},
+        "movie_cache": movie_cache,
     }
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), "utf-8")
     print(f"→ data.json {OUT.stat().st_size / 1024:.0f} KB")
