@@ -573,14 +573,14 @@ const artMeta = list => list.length ? `<span>${esc(list[0].source || '来源')}$
 const ico = (c, icon) => `<span class="ico" style="--c:${c}">${icon}</span>`;
 const SCHED_ICON = { movie: '🎬', tv: '📺', show: '🎤' };
 function concertRow(c) {
-  const key = 'concert/' + D.news.concert.indexOf(c);
+  const key = 'concert/' + CID(c);
   if (!c.date) return `<a class="news-row" ${itemAttr(key)}>${ico('var(--concert)', '🎤')}<span class="l">${c.city ? `<span class="chip">${esc(c.city)}</span> ` : ''}${esc(c.title)}</span><span class="r">${esc(c.articles[0].source)} · ${ago(c.articles[0].published)}</span></a>`;
   return `<a class="item" ${itemAttr(key)}>${dateBox(c.date, c.time)}<div><div class="t">${esc(c.title)}</div>
     <div class="m"><span class="chip c" style="--c:${c.sale ? 'var(--concert)' : 'var(--tv)'}">${c.sale ? '开票' : '演出 / 官宣'}</span>${c.city ? `<span class="chip">${esc(c.city)}</span>` : ''}${artMeta(c.articles)}</div></div>
     <div class="r" style="--c:var(--concert)"><b>${c.time ? countdown(c.date, c.time) : rel(c.date)}</b></div></a>`;
 }
 function launchRow(e) {
-  const key = 'launch/' + D.launches.indexOf(e), today = cstToday();
+  const key = 'launch/' + EID(e), today = cstToday();
   if (!e.date) return `<a class="news-row" ${itemAttr(key)}>${ico('var(--launch)', '📱')}<span class="l"><span class="chip c" style="--c:var(--launch)">${esc(e.brand)}</span> ${esc(e.title)}</span><span class="r">${esc(e.articles[0].source)} · ${ago(e.articles[0].published)}</span></a>`;
   return `<a class="item" ${itemAttr(key)}>${dateBox(e.date, e.time)}<div><div class="t">${esc(e.brand)} · ${esc(e.title)}</div>
     <div class="m"><span class="chip c" style="--c:var(--launch)">${esc(e.brand)}</span>${e.manual ? '<span class="chip c" style="--c:var(--ok)">人工确认</span>' : artMeta(e.articles)}
@@ -588,7 +588,7 @@ function launchRow(e) {
     <div class="r" style="--c:var(--launch)"><b>${diffDays(e.date, today) < 0 ? '已结束' : countdown(e.date, e.time)}</b>${diffDays(e.date, today) >= 0 && !e.time ? '<span class="muted">北京时间</span>' : ''}</div></a>`;
 }
 function schedRow(s) {
-  return `<a class="item" ${itemAttr('sched/' + D.news.schedule.indexOf(s))}>${dateBox(s.date, s.time)}<div><div class="t">《${esc(s.name)}》</div>
+  return `<a class="item" ${itemAttr('sched/' + SID(s))}>${dateBox(s.date, s.time)}<div><div class="t">《${esc(s.name)}》</div>
     <div class="m"><span class="chip c" style="--c:${COLOR[s.cat]}">${{ movie: '电影', show: '综艺', tv: '剧集' }[s.cat]}</span>${s.platform ? `<span class="chip">${esc(s.platform)}</span>` : ''}${artMeta(s.articles)}</div></div>
     <div class="r" style="--c:${COLOR[s.cat]}">${s.date ? `<b>${rel(s.date)}</b>` : '<span class="muted">日期未公布</span>'}</div></a>`;
 }
@@ -600,9 +600,9 @@ function dayEvents(days) {
   D.allMovies.forEach(m => match(m.title) && push(m.release, { c: COLOR.movie, icon: '🎬', t: m.title, pre: m.rating ? `<b>${m.rating}</b> ` : '', key: 'movie/' + m.id, kind: '电影上映' }));
   D.tv.forEach(t => t.pub_precise && match(t.title) && push(t.pubdate, { c: COLOR[t.kind], icon: t.kind === 'show' ? '🎤' : '📺', t: t.title, pre: '开播 ', key: 'tv/' + t.id, kind: t.kind === 'show' ? '综艺开播' : '剧集开播' }));
   const tvTitles = new Set(D.tv.map(t => t.title)), movieTitles = new Set(D.allMovies.map(m => m.title));
-  D.news.schedule.forEach((s, i) => !tvTitles.has(s.name) && !movieTitles.has(s.name) && match(s.name) && push(s.date, { c: COLOR[s.cat], icon: SCHED_ICON[s.cat], t: `《${s.name}》`, pre: '定档 ', key: 'sched/' + i, kind: '定档' }));
-  D.launches.forEach((e, i) => match(e.brand, e.title) && push(e.date, { c: COLOR.launch, icon: '📱', t: `${e.brand} 发布会`, pre: e.time ? e.time + ' ' : '', key: 'launch/' + i, kind: '发布会' }));
-  D.news.concert.forEach((c, i) => c.sale && match(c.title, c.city) && push(c.date, { c: COLOR.concert, icon: '🎫', t: c.title, pre: '开票 ', key: 'concert/' + i, kind: '开票' }));
+  D.news.schedule.forEach((s, i) => !tvTitles.has(s.name) && !movieTitles.has(s.name) && match(s.name) && push(s.date, { c: COLOR[s.cat], icon: SCHED_ICON[s.cat], t: `《${s.name}》`, pre: '定档 ', key: 'sched/' + SID(s), kind: '定档' }));
+  D.launches.forEach((e, i) => match(e.brand, e.title) && push(e.date, { c: COLOR.launch, icon: '📱', t: `${e.brand} 发布会`, pre: e.time ? e.time + ' ' : '', key: 'launch/' + EID(e), kind: '发布会' }));
+  D.news.concert.forEach((c, i) => c.sale && match(c.title, c.city) && push(c.date, { c: COLOR.concert, icon: '🎫', t: c.title, pre: '开票 ', key: 'concert/' + CID(c), kind: '开票' }));
   return evs;
 }
 const evLink = e => `<a class="ev" style="--c:${e.c}" ${itemAttr(e.key)} title="${esc(e.t)}">${e.pre}${esc(e.t)}</a>`;
@@ -626,8 +626,8 @@ function viewHome() {
     <div class="kpis">
       ${kpi(COLOR.movie, '本周新上映', `${D.newMovies.length} 部`, D.newMovies.slice(0, 3).map(m => esc(m.title)).join(' · ') || '本周没有新片', 'movie')}
       ${kpi('var(--star)', best ? '新片最高分' : '热映最高分', best ? stars(best.rating) : '—', best ? esc(best.title) : '', 'movie', best && 'movie/' + best.id)}
-      ${kpi(COLOR.launch, '下一场发布会', nextLaunch ? countdown(nextLaunch.date, nextLaunch.time) : '—', nextLaunch ? `${esc(nextLaunch.brand)} · ${md(nextLaunch.date)} 周${wd(nextLaunch.date)}` : '近期没有', 'launch', nextLaunch && 'launch/' + D.launches.indexOf(nextLaunch))}
-      ${kpi(COLOR.concert, '最近开票', nextSale ? rel(nextSale.date) : '—', nextSale ? esc(nextSale.title) : '近期没有提取到开票日期', 'concert', nextSale && 'concert/' + D.news.concert.indexOf(nextSale))}
+      ${kpi(COLOR.launch, '下一场发布会', nextLaunch ? countdown(nextLaunch.date, nextLaunch.time) : '—', nextLaunch ? `${esc(nextLaunch.brand)} · ${md(nextLaunch.date)} 周${wd(nextLaunch.date)}` : '近期没有', 'launch', nextLaunch && 'launch/' + EID(nextLaunch))}
+      ${kpi(COLOR.concert, '最近开票', nextSale ? rel(nextSale.date) : '—', nextSale ? esc(nextSale.title) : '近期没有提取到开票日期', 'concert', nextSale && 'concert/' + CID(nextSale))}
     </div>
     <div class="section-title"><b>本周日历</b><span>昨天到未来 5 天</span>
       <span class="legend" style="margin-left:auto"><span><i style="--c:var(--movie)"></i>电影</span><span><i style="--c:var(--tv)"></i>剧集</span><span><i style="--c:var(--show)"></i>综艺</span><span><i style="--c:var(--launch)"></i>发布会</span><span><i style="--c:var(--concert)"></i>开票</span></span></div>
@@ -741,7 +741,7 @@ function renderAside() {
   const top = [...D.movies.showing].filter(m => m.rating && m.rating_count >= 1000).sort((a, b) => b.rating - a.rating).slice(0, 5);
   $('#aside').innerHTML = `
     <div class="card widget"><h3>⭐ 热映高分</h3>${top.map(m => `<a class="w-row" ${itemAttr('movie/' + m.id)}><span class="l">${esc(m.title)}</span><span class="r" style="color:var(--star)">${m.rating.toFixed(1)}</span></a>`).join('') || '<div class="w-note">暂无</div>'}</div>
-    <div class="card widget"><h3>📱 发布会倒计时</h3>${soon.map(e => `<a class="w-row" ${itemAttr('launch/' + D.launches.indexOf(e))}><span class="l">${esc(e.brand)} · ${md(e.date)}</span><span class="r">${countdown(e.date, e.time)}</span></a>`).join('') || '<div class="w-note">近期没有</div>'}</div>
+    <div class="card widget"><h3>📱 发布会倒计时</h3>${soon.map(e => `<a class="w-row" ${itemAttr('launch/' + EID(e))}><span class="l">${esc(e.brand)} · ${md(e.date)}</span><span class="r">${countdown(e.date, e.time)}</span></a>`).join('') || '<div class="w-note">近期没有</div>'}</div>
     <div class="card widget"><h3>🛰 来源状态</h3>${Object.entries(D.sources).map(([k, s]) => `<div class="w-row"><span class="l"><i class="st-dot ${s.ok ? '' : s.stale ? 'stale' : 'bad'}"></i>${SRC_NAME[k] || k}</span><span class="r">${s.ok ? s.count + ' 条' : s.stale ? '旧数据' : '失败'}</span></div>`).join('')}</div>
     <div class="card widget"><h3>ℹ️ 说明</h3><p class="w-note">电影、剧集来自豆瓣；演唱会、发布会、定档来自 Google / Bing 新闻标题，日期为自动提取，请以官方公告为准。每天北京时间 08:00 更新。</p></div>`;
 }
@@ -808,8 +808,13 @@ KIT.item('tv', id => {
       + KIT.sec(`近期开播的${t.kind === 'show' ? '综艺' : '剧集'}`, goRows(same.map(tvRow)), `<a class="kit-morelink" href="#/list/tv?kind=${t.kind}&range=new">全部 →</a>`),
     acts: [{ text: '豆瓣 ↗', href: t.url }] };
 });
+// 定档 / 开票 / 发布会的详情链接 id：按内容生成稳定短哈希（定档、开票优先用爬虫给的 key），数据更新、顺序变化后分享链接仍指向同一条
+const hid = str => { let h = 2166136261; for (const ch of String(str)) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); };
+const SID = x => 's' + hid(x.key || [x.name, x.date].join('|'));
+const CID = x => 'c' + hid(x.key || [x.title, x.city, x.date].join('|'));
+const EID = x => 'e' + hid([x.brand, x.date, x.title].join('|'));
 KIT.item('sched', id => {
-  const s = D.news.schedule[+id]; if (!s) return null;
+  const s = D.news.schedule.find(x => SID(x) === id) || (/^\d+$/.test(id) ? D.news.schedule[+id] : null); if (!s) return null;   // 纯数字是旧链接（数组下标），尽量兼容
   const cat = { movie: '电影', show: '综艺', tv: '剧集' }[s.cat];
   const hit = s.cat === 'movie' ? D.allMovies.find(m => m.title === s.name) : D.tv.find(t => t.title === s.name);
   const others = D.news.schedule.filter(x => x !== s && x.cat === s.cat && x.date).slice(0, 6);
@@ -819,11 +824,11 @@ KIT.item('sched', id => {
     body: KIT.sec('要点', KIT.kv([['定档日期', fullDate(s.date, s.time)], ['类型', cat], ['平台', s.platform]]))
       + (hit ? KIT.sec('豆瓣条目', goRows([s.cat === 'movie' ? movieRow(hit) : tvRow(hit)])) : '')
       + KIT.sec('相关报道', artRows(s.articles), '日期从标题提取，以官方为准')
-      + KIT.sec(`其它${cat}定档`, goRows(others.map(x => ['sched/' + D.news.schedule.indexOf(x), `《${esc(x.name)}》`, md(x.date) + ' · ' + rel(x.date)]))),
+      + KIT.sec(`其它${cat}定档`, goRows(others.map(x => ['sched/' + SID(x), `《${esc(x.name)}》`, md(x.date) + ' · ' + rel(x.date)]))),
     acts: [{ text: '阅读原文 ↗', href: s.articles[0]?.url }] };
 });
 KIT.item('concert', id => {
-  const c = D.news.concert[+id]; if (!c) return null;
+  const c = D.news.concert.find(x => CID(x) === id) || (/^\d+$/.test(id) ? D.news.concert[+id] : null); if (!c) return null;
   const a0 = c.articles[0] || {};
   const sameCity = c.city ? D.news.concert.filter(x => x !== c && x.city === c.city).slice(0, 6) : [];
   return { title: c.title, sub: [c.city, a0.source, a0.published ? ago(a0.published) : ''].filter(Boolean).map(esc).join(' · '),
@@ -832,16 +837,16 @@ KIT.item('concert', id => {
     body: KIT.sec('要点', KIT.kv([['日期', c.date ? fullDate(c.date) : '标题里没有具体日期'], ['时间', c.time], ['城市', c.city], ['开票时间', c.sale ? fullDate(c.date, c.time) : ''], ['报道', c.articles.length + ' 篇']]))
       + (a0.desc ? KIT.sec('摘要', KIT.p(a0.desc)) : '')
       + KIT.sec('全部报道', artRows(c.articles), '信息来自新闻标题，以官方售票平台为准')
-      + KIT.sec(`${esc(c.city)}的其它演出`, goRows(sameCity.map(x => ['concert/' + D.news.concert.indexOf(x), esc(x.title), x.date ? md(x.date) : ago(x.articles[0].published)])),
+      + KIT.sec(`${esc(c.city)}的其它演出`, goRows(sameCity.map(x => ['concert/' + CID(x), esc(x.title), x.date ? md(x.date) : ago(x.articles[0].published)])),
         `<a class="kit-morelink" href="#/list/concert?city=${encodeURIComponent(c.city)}">全部 →</a>`),
     acts: [{ text: '阅读原文 ↗', href: a0.url }] };
 });
 KIT.item('launch', id => {
-  const e = D.launches[+id]; if (!e) return null;
+  const e = D.launches.find(x => EID(x) === id) || (/^\d+$/.test(id) ? D.launches[+id] : null); if (!e) return null;
   const a0 = e.articles[0] || {}, past = e.date && diffDays(e.date, cstToday()) < 0;
   const brand = D.launches.filter(x => x !== e && x.brand === e.brand);
   const others = D.launches.filter(x => x !== e && x.brand !== e.brand && x.date && !(diffDays(x.date, cstToday()) < 0)).slice(0, 5);
-  const row = x => ['launch/' + D.launches.indexOf(x), `${esc(x.brand)} · ${esc(x.title)}`, x.date ? md(x.date) : '日期待定'];
+  const row = x => ['launch/' + EID(x), `${esc(x.brand)} · ${esc(x.title)}`, x.date ? md(x.date) : '日期待定'];
   return { title: e.title, sub: `${esc(e.brand)}${e.manual ? ' · 人工确认' : ` · 新闻 ${e.articles.length} 篇`}`,
     thumbIcon: '📱', thumbBg: tint('var(--launch)'), tags: [tag(e.brand), e.manual ? tag('人工确认') : '', past ? tag('已结束') : ''],
     big: e.date ? `<b>${past ? '已结束' : countdown(e.date, e.time)}</b><span class="muted">${md(e.date)} 周${wd(e.date)}${e.time ? ' ' + e.time : ''} 北京时间</span>` : '',
